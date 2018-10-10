@@ -1,0 +1,86 @@
+@mixin line-clamp($count) {
+  @if $count == 1 {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  @else {
+    display: -webkit-box;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    overflow: hidden;
+    white-space: inherit;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $count;
+  }
+}
+
+//--Breakpoints------------------------------
+@mixin media($point) {
+  @if $point == mobil {
+    @media (max-width: 767px) {
+      @content;
+    }
+  }
+  @if $point == pre-mobil {
+    @media (min-width: 544px) {
+      @content;
+    }
+  }
+  @if $point == mobil-landscape {
+    @media screen and (orientation: landscape) {
+      @content;
+    }
+  }
+  @else if $point == tablet {
+    @media (min-width: 768px) {
+      @content;
+    }
+  }
+  @else if $point == only-tablet {
+    @media (min-width: 768px) and (max-width: 992px) {
+      @content;
+    }
+  }
+  @else if $point == print {
+    @media print{
+      @content;
+    }
+  }
+  @else if $point == web {
+    @media (min-width: 992px) {
+      @content;
+    }
+  }
+  @else if $point == wide {
+    @media (min-width:1200px) {
+      @content;
+    }
+  }
+  @else if $point == pre-wide {
+    @media (min-width:1260px) and (max-width:1470px) {
+      @content;
+    }
+  }
+}
+
+// Media of at most the maximum breakpoint width. No query for the largest breakpoint.
+// Reference: https://github.com/twbs/bootstrap/blob/7a7589ffc2786910b3bc7260467227f7d10a462a/scss/mixins/_breakpoints.scss
+$map-grid-breakpoints: (
+        xs: 0,
+        sm: 576px,
+        md: 768px,
+        lg: 992px,
+        xl: 1200px
+);
+
+@mixin media-down($arg) {
+  @if map-has-key($map-grid-breakpoints, $arg) {
+    @media (max-width: map-get($map-grid-breakpoints, $arg) - 1px) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
