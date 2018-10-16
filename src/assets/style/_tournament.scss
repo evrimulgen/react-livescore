@@ -1,0 +1,78 @@
+.tournament-title {
+    background: #333;
+    color: #fff;
+    padding: 10px 25px;
+    position: sticky;
+    top: 47px;
+    z-index: 1;
+}
+
+.tournament-name {
+    display: inline-block;
+    font-weight: lighter;
+    @include line-clamp(1);
+    strong {
+        font-weight: bold;
+    }
+}
+
+.event-score {
+    max-width: 50px;
+    padding: 0;
+}
+
+.events-wrapper {
+    & > div:nth-child(odd) {
+        background: rgba(0, 0, 0, 0.1);
+        &.fav-active {
+            background: rgba(33, 150, 243, .12);
+        }
+    }
+    .fav-active {
+        background: rgba(33, 150, 243, .05);
+    }
+}
+
+.event-container {
+    height: 50px;
+    line-height: 50px;
+}
+
+.event-team {
+    @include line-clamp(1);
+}
+
+.event-time {
+    font-size: .9rem;
+    max-width: 40px;
+    .live {
+        color: red;
+    }
+}
+
+.event-fav {
+    font-size: 1.5rem;
+    max-width: 40px;
+    .notifications {
+        color: rgba(0, 0, 0, .3);
+    }
+    .notifications_active {
+        color: #2196F3;
+    }
+}
+
+.live-blinker {
+
+}
+
+.live-blinker {
+    animation: blink-animation 1s linear infinite;
+    color: red;
+    margin-left: 1px;
+}
+
+@keyframes blink-animation {
+    50% {
+        opacity: 0;
+    }
+}

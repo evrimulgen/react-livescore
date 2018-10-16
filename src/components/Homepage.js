@@ -2,31 +2,32 @@ import React, {Component} from 'react';
 import $ from "jquery";
 import SportRow from "./SportRow";
 import Errors from "./Errors";
+import Loading from "./Loading";
 
 class Homepage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            mainContent: null,
-            loading: false
+            liveGames: null,
+            loading: false,
+            liveSwitch: true,
         };
+        this.toggleLiveSwitch = this.toggleLiveSwitch.bind(this);
     }
 
     getData = options => {
         this.setState({
             loading: true
         });
-        options.data = options.data || {};
-        options.callback = options.callback || {};
         let content = [];
+
         $.ajax({
             url: 'https://www.sofascore.com' + options.api,
-            data: options.data
         }).done((data) => {
             if (data.sportItem) {
                 content.push(<SportRow key={1} data={data}/>)
             } else if (data.liveList) {
-                content.push(<Errors />)
+                content.push(<Errors type="no-live-game"/>)
             }
             if (options.scrollToTop) {
                 window.scrollTo({
@@ -35,30 +36,53 @@ class Homepage extends Component {
                 });
             }
         }).fail((xhr) => {
-            content.push(<div className="fetch-alert error" key={1}><strong>Error!</strong> Something seriously gone
-                wrong :( <p><br/><code><strong>{xhr.status || ""}</strong><br/>{xhr.responseText}</code></p></div>);
+            content.push(<Errors type="error" message={xhr.responseText} status={xhr.status}/>);
         }).always(() => {
             this.setState({
-                mainContent: content,
+                liveGames: content,
                 loading: false
             });
         });
     };
 
-    componentDidMount() {
-        this.props.getData({
-            api: '/football//2018-10-10/json',
-            data: null
-        });
+    toggleLiveSwitch() {
+        const currentState = this.state.liveSwitch;
+        this.setState({liveSwitch: !currentState});
+    }
 
-        this.props.updateParentState({
-            mainContent: 'heyooo',
-            loading: true
+    componentDidMount() {
+        this.getData({
+            //api: '/football/livescore/json',
+            api: '/football//2018-10-03/json',
+            data: null
         });
     }
 
     render() {
-        return this.props.mainContent;
+        return (
+            <div>
+                {this.state.loading ? <Loading/> : null}
+                <div className="container py-4 px-0">
+                    <div className="row mb-3 mx-0 align-items-center">
+                        <div className="col">
+                            <p className="m-0">Live Football</p>
+                        </div>
+                        <div className="col">
+                            <span className="switch-container">
+                            <span className={'switch ml-auto' + (this.state.liveSwitch ? ' active' : '')}
+                                  onClick={this.toggleLiveSwitch}>
+                                <span className="dot"/>
+                            </span>
+                            <span className="switch-title">Live (32)</span>
+                        </span>
+                        </div>
+                    </div>
+                    <div>
+                        {this.state.liveGames}
+                    </div>
+                </div>
+            </div>
+        )
     }
 }
 

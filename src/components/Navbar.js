@@ -1,14 +1,29 @@
 import React, {Component} from 'react'
-import logo from "../logo.svg"
-import FontAwesome from "react-fontawesome"
-import '../assets/style/navbar.css'
+import logo from "../logo.png"
+import Icon from "./Icon";
 
 class Navbar extends Component {
+
+    constructor(props) {
+        super(props);
+        this.headerEl = React.createRef();
+    }
 
     componentDidMount() {
         this.searchHandler = this.debounce(this.searchHandler, 300);
         this.bodyClassList = document.body.classList;
+        this.headerBgAnimation();
     };
+
+    headerBgAnimation() {
+        const headerEl = this.headerEl.current;
+        console.log(headerEl);
+
+        // setInterval(() => {
+        //     headerEl.style.backgroundPositionY =+ "1%";
+        // }, 1000);
+
+    }
 
     debounce = (cb, delay) => {
         let timeout;
@@ -69,7 +84,8 @@ class Navbar extends Component {
 
     render() {
         return (
-            <header className="header">
+            <header className="header" ref={this.headerEl}>
+                <div className="header-animation" />
                 <div className="container">
                     <div className="row">
                         <div className="col col-menu px-0">
@@ -84,11 +100,11 @@ class Navbar extends Component {
                         </div>
                         <div className="col text-center">
                             <img src={logo} className="logo" alt="Movie Search"/>
-                            <h1 className="header-title pl-0"><a href="/" title="Movie Search">Live Scores App</a></h1>
+                            <h1 className="header-title pl-0"><a href="/" title="Movie Search"><strong>LIVE</strong>SCORES</a></h1>
                         </div>
                         <div className="col col-search px-0">
                             <button className="header-btn" onClick={this.toggleSearchBar}>
-                                <FontAwesome name="search"/>
+                                <Icon name="search"/>
                             </button>
                         </div>
                     </div>
@@ -105,7 +121,7 @@ class Navbar extends Component {
                 </ul>
                 <section className="searchbar">
                     <div className="container px-0 position-relative">
-                        <FontAwesome name="search search-icon"/>
+                        <Icon name="search" classname="search-icon"/>
                         <input
                             ref={(input) => {
                                 this.searchInput = input;
