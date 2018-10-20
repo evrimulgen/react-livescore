@@ -25,11 +25,12 @@
     & > div:nth-child(odd) {
         background: rgba(0, 0, 0, 0.1);
         &.fav-active {
-            background: rgba(33, 150, 243, .12);
+            background: rgba($color-cl-4, .12);
         }
     }
     .fav-active {
-        background: rgba(33, 150, 243, .05);
+        background: rgba($color-cl-4, .05);
+
     }
 }
 
@@ -53,11 +54,11 @@
 .event-fav {
     font-size: 1.5rem;
     max-width: 40px;
-    .notifications {
-        color: rgba(0, 0, 0, .3);
+    i {
+        color: rgba(#000, .3);
     }
-    .notifications_active {
-        color: #2196F3;
+    .active {
+        color: rgba($color-cl-2, 1);
     }
 }
 

@@ -50,7 +50,7 @@ class Event extends Component {
                             {event.awayTeam.name}
                         </div>
                         <div className="col event-fav pl-0 text-right pr-2" onClick={this.favClickHandler}>
-                            {this.state.favActive ? <Icon name="notifications_active" /> : <Icon name="notifications" />}
+                            {this.state.favActive ? <Icon name="fas fa-star active" /> : <Icon name="far fa-star" />}
 
                         </div>
                     </div>

@@ -104,7 +104,7 @@ class Navbar extends Component {
                         </div>
                         <div className="col col-search px-0">
                             <button className="header-btn" onClick={this.toggleSearchBar}>
-                                <Icon name="search"/>
+                                <Icon name="fas fa-search"/>
                             </button>
                         </div>
                     </div>
@@ -121,7 +121,7 @@ class Navbar extends Component {
                 </ul>
                 <section className="searchbar">
                     <div className="container px-0 position-relative">
-                        <Icon name="search" classname="search-icon"/>
+                        <Icon name="fas fa-search search-icon"/>
                         <input
                             ref={(input) => {
                                 this.searchInput = input;

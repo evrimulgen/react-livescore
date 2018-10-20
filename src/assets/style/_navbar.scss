@@ -22,10 +22,10 @@
 
 .header-animation {
     position: absolute;
-    top:0;
-    height:50px;
+    top: 0;
+    height: 50px;
     width: 100%;
-    left:0;
+    left: 0;
     background: url(../images/bg1.jpg) 0 100% no-repeat;
     background-size: cover;
     animation: background-position 20s ease-in-out infinite alternate;
@@ -345,7 +345,7 @@
     }
 
     .header-animation {
-        opacity:.4;
+        opacity: .4;
     }
 
     .nav-list {
@@ -444,14 +444,57 @@
         margin: 1px 1px;
     }
     &.active {
-        background-color: #77e189;
+        background-color: rgba($color-cl-3, 1);
         border: solid 1px transparent;
-        .dot{
+        .dot {
             margin-left: 24px;
         }
     }
 }
 
+.header-tabs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+    background: rgba($color-cl-4, 1);
+    li {
+        &:hover:not(.empty) {
+            background: rgba($color-cl-2, .1);
+        }
+        &.active,
+        &.active:hover {
+            background: rgba($color-cl-2, .3);
+        }
+    }
+    .col-filter {
+        max-width: 40px;
+    }
+    a {
+        border-left: 1px solid rgba($color-cl-3, .4);
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        padding: 10px 5px;
+        height: 100%;
+        color: #fff;
+        &:hover {
+            text-decoration: none;
+        }
+    }
+    i {
+        font-size: 1.5rem;
+    }
+    .fa-angle-down {
+        font-size: .9rem;
+    }
+    .fa-filter {
+        font-size: .9rem;
+    }
+    .expand_more {
+        font-size: .8rem;
+    }
+}
 
 @keyframes close-icon-left-line {
     0% {
