@@ -10,12 +10,12 @@ class Headertabs extends Component {
             isFilterSelected: false,
             filteredItems: [],
             isLive: true,
-            isSportDropdown: false
+            isSportDropdown: false,
+            mainContent: this.props.mainData
         };
         this.toggleLive = this.toggleLive.bind(this);
         this.openFilterDropdown = this.openFilterDropdown.bind(this);
         this.openSportDropdown = this.openSportDropdown.bind(this);
-        this.clickSportDropdown = this.clickSportDropdown.bind(this);
         this.applyFilter = this.applyFilter.bind(this);
         this.filterItemClickHandler = this.filterItemClickHandler.bind(this);
         this.clearFilter = this.clearFilter.bind(this);
@@ -70,16 +70,12 @@ class Headertabs extends Component {
     }
 
     openSportDropdown() {
-        setTimeout(() => {
-            this.setState({isSportDropdown: !this.state.isSportDropdown});
-        }, 10);
-    }
-
-    clickSportDropdown(el) {
-        if (this.state.isSportDropdown) {
-            el.target.blur();
-            el.target.parentNode.blur();
-        }
+        this.setState({isSportDropdown: !this.state.isSportDropdown});
+        console.log(this.props.mainData.sportItem.tournaments);
+        // let tempState = {
+        //     mainData: null
+        // };
+        //this.props.updateParentState(tempState);
     }
 
     render() {
@@ -88,9 +84,7 @@ class Headertabs extends Component {
                 <li className="col p-0">
                     <div
                         className="header-tabs-container"
-                        onBlur={this.openSportDropdown}
-                        onFocus={this.openSportDropdown}
-                        onClick={this.clickSportDropdown.bind(this)}
+                        onClick={this.openSportDropdown.bind(this)}
                         tabIndex="0">
                         <Icon name="far fa-futbol mr-2"/>Futbol<Icon
                         name={"ml-2 fas fa-angle-" + (this.state.isSportDropdown ? 'up' : 'down')}/>

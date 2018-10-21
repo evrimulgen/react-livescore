@@ -12,18 +12,7 @@ class Navbar extends Component {
     componentDidMount() {
         this.searchHandler = this.debounce(this.searchHandler, 300);
         this.bodyClassList = document.body.classList;
-        this.headerBgAnimation();
     };
-
-    headerBgAnimation() {
-        const headerEl = this.headerEl.current;
-        console.log(headerEl);
-
-        // setInterval(() => {
-        //     headerEl.style.backgroundPositionY =+ "1%";
-        // }, 1000);
-
-    }
 
     debounce = (cb, delay) => {
         let timeout;

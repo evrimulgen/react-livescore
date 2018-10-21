@@ -11,7 +11,7 @@ class Main extends Component {
     render() {
         return (
             <main className="main">
-                {this.props.mainContent}
+                {this.props.mainData}
             </main>
         )
     }

@@ -23,7 +23,7 @@ const NoLiveGame = () => {
 const Error = props => {
     return (
             <div className="fetch-alert error"><strong>Error!</strong> Something seriously gone
-                wrong :( <p><br/><code><strong>{props.status || ""}</strong><br/>{props.message || ""}</code></p></div>
+                wrong :( <p><br/><code><strong>{props.status || ""}</strong> - {props.message || ""}</code></p></div>
     )
 };
 
