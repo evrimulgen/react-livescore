@@ -1,90 +1,134 @@
 
 html {
-  font-size: 15px;
-  @include media(web) {
-    font-size: 16px;
-  }
+    font-size: 15px;
+    @include media(web) {
+        font-size: 16px;
+    }
 }
 
 body {
-  left:0;
-  padding-top: 48px;
-  position: relative;
-  transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
-  font-family: 'SF Pro Text', Helvetica, sans-serif;
-  font-weight: 400;
-  font-synthesis: none;
-  -moz-font-feature-settings: 'kern';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  direction: ltr;
-  text-align: left;
+    left: 0;
+    padding-top: 48px;
+    position: relative;
+    transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    font-family: 'SF Pro Text', Helvetica, sans-serif;
+    font-weight: 400;
+    font-synthesis: none;
+    -moz-font-feature-settings: 'kern';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    direction: ltr;
+    text-align: left;
 }
 
 .py-15px {
-  padding-bottom: 15px;
-  padding-top: 15px;
+    padding-bottom: 15px;
+    padding-top: 15px;
 }
 
 .main {
-  min-height: calc(100vh - 242px);
-  position: relative;
+    min-height: calc(100vh - 242px);
+    position: relative;
 }
 
 .fetch-alert {
-  color: #777;
-  font-size: 1rem;
-  padding: 20vh 0;
-  text-align: center;
+    color: #777;
+    font-size: 1rem;
+    padding: 20vh 0;
+    text-align: center;
 }
 
 .fetch-alert.error {
-  color: #a94442
+    color: #a94442
 }
 
 .movie-title {
-  font-size: 1.3rem;
-  font-weight: bolder;
+    font-size: 1.3rem;
+    font-weight: bolder;
 }
 
 .movie-poster {
-  border-radius: 10px;
+    border-radius: 10px;
 }
 
 .movie-overview {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .stripe > div:nth-child(even) {
-  background: rgba(0, 0, 0, .05);
+    background: rgba(0, 0, 0, .05);
+}
+
+.checkbox {
+    position: relative;
+    margin: 0 1rem 0 0;
+    cursor: pointer;
+    width: 1rem;
+    height: 1rem;
+}
+
+.checkbox:before {
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    content: "";
+    position: absolute;
+    left: 0;
+    z-index: 1;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid #f2f2f2;
+}
+
+.checked .checkbox:before {
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    height: .5rem;
+    border-color: #009688;
+    border-top-style: none;
+    border-right-style: none;
+}
+
+.checkbox:after {
+    content: "";
+    position: absolute;
+    top: -0.125rem;
+    left: 0;
+    width: 1.1rem;
+    height: 1.1rem;
+    background: #fff;
+    cursor: pointer;
 }
 
 footer {
-  background: #eee;
-  border-top: 1px solid #ccc;
-  color: #777;
-  font-size: .8rem;
-  padding: 2rem 0;
+    background: #eee;
+    border-top: 1px solid #ccc;
+    color: #777;
+    font-size: .8rem;
+    padding: 2rem 0;
 }
 
 code {
-  color: #333;
+    color: #333;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .error-no-live-game {
-  padding: 20vh 0;
-  text-align: center;
+    padding: 20vh 0;
+    text-align: center;
 }
 
 
