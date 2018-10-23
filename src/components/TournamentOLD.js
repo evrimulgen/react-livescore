@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import Event from "./Event";
 
-class Tournament extends Component {
+class TournamentOLD extends Component {
+    constructor(props) {
+        super(props);
+    }
 
     flagImg() {
         let uniqueTournamentImages = [7,8,11,384,480,679];
@@ -31,7 +34,7 @@ class Tournament extends Component {
                 </div>
                 <div className="events-wrapper">
                     {this.props.tournament.events.map((event, i) => {
-                        return (<Event key={i} event={event}/>)
+                        return (<Event key={i} event={event} {...this.props}/>)
                     })}
                 </div>
             </div>
@@ -39,4 +42,4 @@ class Tournament extends Component {
     }
 }
 
-export default Tournament
+export default TournamentOLD

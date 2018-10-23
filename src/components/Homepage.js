@@ -2,13 +2,14 @@ import React, {Component} from 'react';
 import SportRow from "./SportRow";
 import Errors from "./Errors";
 import Loading from "./Loading";
+import moment from "moment";
 
 class Homepage extends Component {
 
-
     componentDidMount() {
+        let todaysDate = moment().format('YYYY-M-D');
         this.props.getData({
-            api: '/football//2018-10-03/json',
+            api: '/football//' + todaysDate +'/json',
             data: null,
             scrollToTop: false
         });
@@ -23,7 +24,7 @@ class Homepage extends Component {
                 mainContent.push(<Errors key={1} type="error" message="Error" status={dataObj.status}/>);
             } else {
                 if (dataObj.sportItem) {
-                    mainContent.push(<SportRow key={1} data={dataObj}/>)
+                    mainContent.push(<SportRow key={1} data={dataObj} {...this.props}/>)
                 } else if (dataObj.liveList) {
                     mainContent.push(<Errors key={1} type="no-live-game"/>)
                 }
