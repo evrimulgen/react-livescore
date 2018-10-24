@@ -12,12 +12,14 @@ class Event extends Component {
 
     isInProgress() {
         let text;
+        let liveBlinkerCodes = [6,7];
         switch (this.props.event.status.type) {
             case "inprogress":
                 text =
                     <div className="live font-weight-bold">
                         {this.props.event.statusDescription}
-                        {(this.props.event.status.code === 7) ? <span className="live-blinker">'</span> : null}
+                        {(this.props.event.status.code === 6) ? '' : ''}
+                        {(liveBlinkerCodes.indexOf(this.props.event.status.code) > -1) ? <span className="live-blinker">'</span> : ''}
                     </div>;
                 break;
             case "notstarted":
