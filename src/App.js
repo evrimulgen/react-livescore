@@ -7,6 +7,7 @@ import {Switch, Route} from "react-router-dom";
 import TestComp from "./components/TestComp";
 import Headertabs from "./components/Headertabs";
 import $ from "jquery";
+import moment from "moment";
 
 class App extends Component {
     constructor(props) {
@@ -23,6 +24,20 @@ class App extends Component {
         this.setState(state);
     };
 
+    removeYesterdayMatches = data => {
+        let currentDate = data.params.date;
+        data.sportItem.tournaments = data.sportItem.tournaments.reduce(function( whole, item ) {
+            item.events.forEach((event) => {
+                let startDate = moment(event.startTimestamp * 1000).format('YYYY-MM-DD');
+                if (startDate === currentDate) {
+                    if (whole.indexOf(item) < 0) whole.push(item);
+                }
+            });
+            return whole;
+        }, []);
+        return data;
+    };
+
     getData = options => {
         this.setState({
             loading: true
@@ -33,7 +48,7 @@ class App extends Component {
             url: 'https://www.sofascore.com' + options.api,
             data: options.data
         }).done((data) => {
-            jsonData = data;
+            jsonData = this.removeYesterdayMatches(data);
         }).fail((xhr) => {
             jsonData.status = xhr.status;
         }).always(() => {

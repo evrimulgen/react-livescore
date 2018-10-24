@@ -2,10 +2,6 @@ import React, {Component} from 'react';
 import Event from "./Event";
 
 class SportRow extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     static flagImg(tournament) {
         let uniqueTournamentImages = [7,8,11,384,480,679];
         if (uniqueTournamentImages.indexOf(tournament.tournament.uniqueId) > -1) {
