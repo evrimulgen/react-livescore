@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Icon from "./Icon";
+import moment from "moment";
 
 class Event extends Component {
     constructor(props) {
@@ -25,7 +26,7 @@ class Event extends Component {
             case "notstarted":
                 text =
                     <div className="full-time font-weight-bold">
-                        {this.props.event.startTime}
+                        {moment(this.props.event.startTimestamp * 1000).format('HH:mm')}
                     </div>;
                 break;
             default:
@@ -53,8 +54,8 @@ class Event extends Component {
                         <div className="col event-team home text-right pr-0 pl-2">
                             {event.homeTeam.name}
                         </div>
-                        <div className="col event-score text-center font-weight-bold px-0">
-                            {event.status.type === "notstarted" ? "-" : event.homeScore.current + ' : ' + event.awayScore.current}
+                        <div className={"col event-score text-center font-weight-bold px-0" + (event.status.type === 'inprogress' ? ' live' : '')}>
+                            {event.status.type === "notstarted" ? "-" : event.homeScore.current + ':' + event.awayScore.current}
                         </div>
                         <div className="col event-team away text-left pl-0 pr-2">
                             {event.awayTeam.name}

@@ -1,5 +1,5 @@
 .tournament-title {
-    background: #333;
+    background: $color-cl-1;
     color: #fff;
     padding: 10px 25px;
     position: sticky;
@@ -17,6 +17,7 @@
 }
 
 .event-score {
+    letter-spacing: 0.01rem;
     max-width: 50px;
     padding: 0;
 }
@@ -46,19 +47,20 @@
 .event-time {
     font-size: .9rem;
     max-width: 50px;
-    .live {
-        color: red;
-    }
+}
+
+.live {
+    color: red;
 }
 
 .event-fav {
     font-size: 1.5rem;
     max-width: 40px;
     i {
-        color: rgba(#000, .3);
+        color: rgba(#333, .2);
     }
     .active {
-        color: rgba($color-cl-2, 1);
+        color: rgba($color-cl-4, 1);
     }
 }
 

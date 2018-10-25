@@ -9,7 +9,7 @@ class Headertabs extends Component {
             isFilterDropdown: false,
             isFilterSelected: false,
             filteredItems: [],
-            isLive: true,
+            isLive: false,
             isSportDropdown: false,
             mainContent: this.props.mainData
         };
@@ -19,13 +19,11 @@ class Headertabs extends Component {
         this.applyFilter = this.applyFilter.bind(this);
         this.filterItemClickHandler = this.filterItemClickHandler.bind(this);
         this.clearFilter = this.clearFilter.bind(this);
-
     }
 
     componentDidMount() {
-        // codes here...
+        // code here...
     }
-
     clearFilter() {
         this.setState({
             filteredItems: [],
@@ -62,6 +60,26 @@ class Headertabs extends Component {
     }
 
     toggleLive() {
+        if (this.state.isLive === false) {
+            // let LiveMatches = this.props.mainData;
+            // LiveMatches.sportItem.tournaments = LiveMatches.sportItem.tournaments.reduce(function( whole, item ) {
+            //     item.events.forEach((event) => {
+            //         console.log(event.status.type);
+            //         if (event.status.type === "inprogress") {
+            //             if (whole.indexOf(item) < 0) whole.push(item);
+            //         }
+            //     });
+            //     return whole;
+            // }, []);
+            this.props.updateParentState({
+                mainContent: "heyooo"
+            })
+        } else {
+            console.log('disable live');
+            this.props.updateParentState({
+                mainContent: "heyoooo"
+            })
+        }
         this.setState({isLive: !this.state.isLive});
     }
 
@@ -72,10 +90,6 @@ class Headertabs extends Component {
     openSportDropdown() {
         this.setState({isSportDropdown: !this.state.isSportDropdown});
         console.log(this.props.mainData.sportItem.tournaments);
-        // let tempState = {
-        //     mainData: null
-        // };
-        //this.props.updateParentState(tempState);
     }
 
     render() {
