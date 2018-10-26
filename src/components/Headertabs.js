@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Icon from "./Icon";
+import {cloneDeep} from "lodash";
 
 class Headertabs extends Component {
 
@@ -11,7 +12,6 @@ class Headertabs extends Component {
             filteredItems: [],
             isLive: false,
             isSportDropdown: false,
-            mainContent: this.props.mainData
         };
         this.toggleLive = this.toggleLive.bind(this);
         this.openFilterDropdown = this.openFilterDropdown.bind(this);
@@ -21,9 +21,6 @@ class Headertabs extends Component {
         this.clearFilter = this.clearFilter.bind(this);
     }
 
-    componentDidMount() {
-        // code here...
-    }
     clearFilter() {
         this.setState({
             filteredItems: [],
@@ -59,26 +56,26 @@ class Headertabs extends Component {
         });
     }
 
-    toggleLive() {
-        if (this.state.isLive === false) {
-            // let LiveMatches = this.props.mainData;
-            // LiveMatches.sportItem.tournaments = LiveMatches.sportItem.tournaments.reduce(function( whole, item ) {
-            //     item.events.forEach((event) => {
-            //         console.log(event.status.type);
-            //         if (event.status.type === "inprogress") {
-            //             if (whole.indexOf(item) < 0) whole.push(item);
-            //         }
-            //     });
-            //     return whole;
-            // }, []);
+
+    toggleLive(status) {
+        if (status === false) {
+            let LiveMatches = cloneDeep(this.props.mainData);
+            LiveMatches.sportItem.tournaments = LiveMatches.sportItem.tournaments.reduce(function (whole, item) {
+                item.events.forEach((event) => {
+                    //console.log(event.status.type);
+                    if (event.status.type === "inprogress") {
+                        if (whole.indexOf(item) < 0) whole.push(item);
+                    }
+                });
+                return whole;
+            }, []);
             this.props.updateParentState({
-                mainContent: "heyooo"
-            })
+                mainData: LiveMatches
+            });
         } else {
-            console.log('disable live');
             this.props.updateParentState({
-                mainContent: "heyoooo"
-            })
+                mainData: this.props.orjData
+            });
         }
         this.setState({isLive: !this.state.isLive});
     }
@@ -125,7 +122,7 @@ class Headertabs extends Component {
                 </li>
 
                 <li className={"col col-live p-0" + (this.state.isLive ? ' active' : '')}>
-                    <div className="header-tabs-container justify-content-center" onClick={this.toggleLive}>
+                    <div className="header-tabs-container justify-content-center" onClick={this.toggleLive.bind(null,this.state.isLive)}>
                         <Icon name="far fa-clock mr-1"/> Live
                     </div>
                 </li>

@@ -14,7 +14,8 @@ class App extends Component {
         super(props);
         this.state = {
             mainData: null,
-            loading: false
+            loading: false,
+            orjData: null
         };
         this.updateParentState = this.updateParentState.bind(this);
         this.getData = this.getData.bind(this);
@@ -53,6 +54,7 @@ class App extends Component {
             jsonData.status = xhr.status;
         }).always(() => {
             this.setState({
+                orjData: jsonData,
                 mainData: jsonData,
                 loading: false
             });
@@ -72,6 +74,8 @@ class App extends Component {
                 <Headertabs
                     {...this.state}
                     updateParentState={this.updateParentState}
+                    getData={this.getData}
+                    resetState={this.resetState}
                 />
                 {/*<Main getData={this.getData} {...this.state}/>*/}
                 <main className="main">
