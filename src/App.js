@@ -27,12 +27,12 @@ class App extends Component {
 
     removeYesterdayMatches = data => {
         let currentDate = data.params.date;
-        data.sportItem.tournaments = data.sportItem.tournaments.reduce(function( whole, item ) {
-            item.events.forEach((event) => {
-                let startDate = moment(event.startTimestamp * 1000).format('YYYY-MM-DD');
-                if (startDate === currentDate) {
-                    if (whole.indexOf(item) < 0) whole.push(item);
-                }
+        data.sportItem.tournaments = data.sportItem.tournaments.reduce(function (whole, tournament) {
+            tournament.events = tournament.events.filter((event) => {
+                return moment(event.startTimestamp * 1000).format('YYYY-MM-DD') === currentDate;
+            });
+            tournament.events.forEach(() => {
+                if (whole.indexOf(tournament) < 0) whole.push(tournament);
             });
             return whole;
         }, []);

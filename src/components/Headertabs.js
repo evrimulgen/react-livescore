@@ -60,12 +60,12 @@ class Headertabs extends Component {
     toggleLive(status) {
         if (status === false) {
             let LiveMatches = cloneDeep(this.props.mainData);
-            LiveMatches.sportItem.tournaments = LiveMatches.sportItem.tournaments.reduce(function (whole, item) {
-                item.events.forEach((event) => {
-                    //console.log(event.status.type);
-                    if (event.status.type === "inprogress") {
-                        if (whole.indexOf(item) < 0) whole.push(item);
-                    }
+            LiveMatches.sportItem.tournaments = LiveMatches.sportItem.tournaments.reduce(function (whole, tournament) {
+                tournament.events = tournament.events.filter((event) => {
+                    return event.status.type === "inprogress";
+                });
+                tournament.events.forEach(() => {
+                    if (whole.indexOf(tournament) < 0) whole.push(tournament);
                 });
                 return whole;
             }, []);
@@ -122,7 +122,8 @@ class Headertabs extends Component {
                 </li>
 
                 <li className={"col col-live p-0" + (this.state.isLive ? ' active' : '')}>
-                    <div className="header-tabs-container justify-content-center" onClick={this.toggleLive.bind(null,this.state.isLive)}>
+                    <div className="header-tabs-container justify-content-center"
+                         onClick={this.toggleLive.bind(null, this.state.isLive)}>
                         <Icon name="far fa-clock mr-1"/> Live
                     </div>
                 </li>
