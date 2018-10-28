@@ -458,6 +458,21 @@
     list-style: none;
     margin: 0;
     padding: 0;
+    &-container {
+        align-items: center;
+        border-left: 1px solid rgba($color-cl-3, .4);
+        cursor: pointer;
+        display: flex;
+        justify-content: left;
+        padding: 0 5px;
+        height: 40px;
+        &:hover {
+            text-decoration: none;
+        }
+        &:focus {
+            outline: 0;
+        }
+    }
     li {
         color: #fff;
         &.active,
@@ -471,24 +486,31 @@
     }
     .dropdown-menu {
         max-height: 75vh;
-        overflow-y: scroll;
         padding-bottom: 0;
-
-
+        .list-container {
+            overflow-y: scroll;
+            max-height: calc(75vh - 50px - .5rem);
+            &::-webkit-scrollbar {
+                width: 5px;
+            }
+            &::-webkit-scrollbar-track {
+                background: #eee;
+            }
+            &::-webkit-scrollbar-thumb {
+                background: #000;
+            }
+        }
+        .confirm-container {
+            box-shadow: 0px -2px 3px rgba(0,0,0,.3);
+            z-index: 2;
+            position: relative;
+        }
         &.right {
             left: auto;
             right: 0;
             width: 85vw;
         }
-        &::-webkit-scrollbar {
-            width: 5px;
-        }
-        &::-webkit-scrollbar-track {
-            background: #eee;
-        }
-        &::-webkit-scrollbar-thumb {
-            background: #000;
-        }
+
         i {
             margin-right: 5px;
             vertical-align: middle;
@@ -499,7 +521,7 @@
             &:hover,
             &:focus,
             &:active {
-                background: #fff;
+                background: inherit;
             }
         }
         .flag-img img {
@@ -509,50 +531,28 @@
     .dropdown-item {
         align-items: center;
         display: flex;
-        padding: .375rem 1.5rem;
-        &:hover,
-        &:focus,
-        &:active {
-            background: #eee;
-            color: #16181b;
+        padding: .750rem 1.5rem;
+        cursor: pointer;
+        &.checked,
+        &.checked:hover {
+            color: $color-cl-4;
+            background: rgba($color-cl-4, .05);
         }
     }
     .separator {
-        margin: .375rem 0;
+        margin: 0;
     }
-    .filter-okay {
+    .filter-btn {
         background: rgba($color-cl-4, .8);
         color: #fff;
         cursor: pointer;
         display: flex;
         justify-content: center;
-        margin-top: .375rem;
-        padding: 1rem 0;
+        align-items: center;
+        height: 50px;
     }
     .filter-clear {
         background: rgba(#f44336, 1);
-        color: #fff;
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        margin-top: .375rem;
-        max-width: 100px;
-        padding: 1rem 0;
-    }
-    &-container {
-        align-items: center;
-        border-left: 1px solid rgba($color-cl-3, .4);
-        cursor: pointer;
-        display: flex;
-        height: 100%;
-        justify-content: left;
-        padding: 10px 5px;
-        &:hover {
-            text-decoration: none;
-        }
-        &:focus {
-            outline: 0;
-        }
     }
     .col-live {
         max-width: 100px;

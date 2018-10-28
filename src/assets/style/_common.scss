@@ -89,7 +89,7 @@ body {
     -o-transform: rotate(-45deg);
     transform: rotate(-45deg);
     height: .5rem;
-    border-color: #009688;
+    border-color: $color-cl-4;
     border-top-style: none;
     border-right-style: none;
 }
@@ -101,7 +101,6 @@ body {
     left: 0;
     width: 1.1rem;
     height: 1.1rem;
-    background: #fff;
     cursor: pointer;
 }
 

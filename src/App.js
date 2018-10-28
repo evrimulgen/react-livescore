@@ -10,6 +10,7 @@ import $ from "jquery";
 import moment from "moment";
 
 class App extends Component {
+    resetState;
     constructor(props) {
         super(props);
         this.state = {
@@ -24,8 +25,40 @@ class App extends Component {
     updateParentState = state => {
         this.setState(state);
     };
+    sportItem;
+    tournament;
+    startTimestamp;
 
-    removeYesterdayMatches = data => {
+    flagImg(tournament) {
+        let uniqueTournamentImages = [7,8,11,384,480,679];
+        if (uniqueTournamentImages.indexOf(tournament.tournament.uniqueId) > -1) {
+            return (
+                <div className="col flag-img">
+                    <img src={"/static/media/" + tournament.tournament.uniqueId + ".png"} alt={tournament.tournament.name}/>
+                </div>
+            )
+        } else {
+            return (
+                <div className={"col flag flag-" + tournament.category.flag}/>
+            )
+        }
+    };
+
+    preprocessData = data => {
+        // Custom Sorting - Move some tournaments to the top of the list (FYI: 62 = Turkey, Super Lig)
+        let moveToTop = [62]; // list the tournament Id's in order, i.e: [62, 36, 33]
+        let tournaments = data.sportItem.tournaments;
+        for (let i=0; i < tournaments.length; i++) {
+            for (let k=0; k < moveToTop.length; k++) {
+                if (tournaments[i].tournament.id === moveToTop[k]) {
+                    let a = tournaments.splice(i,1); // removes the item
+                    tournaments.unshift(a[0]); // adds it back to the beginning
+                    break;
+                }
+            }
+        }
+
+        // remove yesterday matches
         let currentDate = data.params.date;
         data.sportItem.tournaments = data.sportItem.tournaments.reduce(function (whole, tournament) {
             tournament.events = tournament.events.filter((event) => {
@@ -49,7 +82,7 @@ class App extends Component {
             url: 'https://www.sofascore.com' + options.api,
             data: options.data
         }).done((data) => {
-            jsonData = this.removeYesterdayMatches(data);
+            jsonData = this.preprocessData(data);
         }).fail((xhr) => {
             jsonData.status = xhr.status;
         }).always(() => {
@@ -76,6 +109,7 @@ class App extends Component {
                     updateParentState={this.updateParentState}
                     getData={this.getData}
                     resetState={this.resetState}
+                    flagImg={this.flagImg}
                 />
                 {/*<Main getData={this.getData} {...this.state}/>*/}
                 <main className="main">
@@ -87,7 +121,9 @@ class App extends Component {
                             <Homepage
                                 {...this.state}
                                 updateParentState={this.updateParentState}
-                                getData={this.getData}/>
+                                getData={this.getData}
+                                flagImg={this.flagImg}
+                            />
                         )}/>
 
                         <Route exact path="/test" render={() => (

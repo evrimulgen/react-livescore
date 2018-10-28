@@ -25,28 +25,12 @@ class Headertabs extends Component {
         this.setState({
             filteredItems: [],
             isFilterDropdown: false,
-            isFilterSelected: false
+            isFilterSelected: false,
+            isLive: false
         });
-        let checkEls = document.querySelectorAll('.filters .checked');
-        checkEls.forEach(item => {
-            item.classList.remove('checked');
+        this.props.updateParentState({
+            mainData: this.props.orjData
         });
-    }
-
-    filterItemClickHandler(el) {
-        let item = el.currentTarget;
-        item.classList.toggle('checked');
-
-        let newfilteredItems = [...this.state.filteredItems],
-            id = el.currentTarget.getAttribute('data-id');
-
-        if (newfilteredItems.indexOf(id) === -1) {
-            newfilteredItems.push(id);
-        } else {
-            newfilteredItems = newfilteredItems.filter(x => x !== id);
-        }
-        this.setState({filteredItems: newfilteredItems});
-        console.log(newfilteredItems);
     }
 
     applyFilter() {
@@ -54,10 +38,41 @@ class Headertabs extends Component {
             isFilterDropdown: false,
             isFilterSelected: this.state.filteredItems.length > 0
         });
+        if (this.state.filteredItems.length > 0) {
+            let LiveMatches = cloneDeep(this.props.orjData);
+            LiveMatches.sportItem.tournaments = LiveMatches.sportItem.tournaments.filter((tournament) => {
+                return this.state.filteredItems.indexOf(tournament.tournament.id) > -1
+            });
+            this.props.updateParentState({
+                mainData: LiveMatches
+            });
+            this.setState({
+                isLive: false
+            })
+        } else {
+            this.clearFilter();
+        }
+    }
+
+    filterItemClickHandler(el) {
+        let item = el.currentTarget;
+        item.classList.toggle('checked');
+
+        let newfilteredItems = [...this.state.filteredItems],
+            id = parseInt(el.currentTarget.getAttribute('data-id'));
+
+        if (newfilteredItems.indexOf(id) === -1) {
+            newfilteredItems.push(id);
+        } else {
+            newfilteredItems = newfilteredItems.filter(x => x !== id);
+        }
+        this.setState({filteredItems: newfilteredItems});
     }
 
 
     toggleLive(status) {
+        this.setState({isFilterDropdown: false});
+        this.setState({isSportDropdown: false});
         if (status === false) {
             let LiveMatches = cloneDeep(this.props.mainData);
             LiveMatches.sportItem.tournaments = LiveMatches.sportItem.tournaments.reduce(function (whole, tournament) {
@@ -73,20 +88,25 @@ class Headertabs extends Component {
                 mainData: LiveMatches
             });
         } else {
-            this.props.updateParentState({
-                mainData: this.props.orjData
-            });
+            if (this.state.filteredItems.length > 0) {
+                this.applyFilter();
+            } else {
+                this.props.updateParentState({
+                    mainData: this.props.orjData
+                });
+            }
         }
         this.setState({isLive: !this.state.isLive});
     }
 
     openFilterDropdown() {
         this.setState({isFilterDropdown: !this.state.isFilterDropdown});
+        this.setState({isSportDropdown: false});
     }
 
     openSportDropdown() {
         this.setState({isSportDropdown: !this.state.isSportDropdown});
-        console.log(this.props.mainData.sportItem.tournaments);
+        this.setState({isFilterDropdown: false});
     }
 
     render() {
@@ -139,48 +159,14 @@ class Headertabs extends Component {
                     </div>
                     <div className={"dropdown-menu filters right" + (this.state.isFilterDropdown ? ' show' : '')}
                          aria-labelledby="dropdownMenuButton">
-                        <div className="dropdown-item" data-id="1234" onClick={this.filterItemClickHandler.bind(this)}>
-                            <span className="checkbox"/>
-                            <div className="col flag flag-england"/>
-                            <div className="col tournament-name px-2"><strong>England</strong> - EFL Cup</div>
+                        <div className="list-container">
+                        {this.state.isFilterDropdown ? <FilterItems filterItemClickHandler={this.filterItemClickHandler} {...this.props} {...this.state}/> : ''}
                         </div>
-                        <hr className="separator"/>
-                        <div className="dropdown-item" data-id="352" onClick={this.filterItemClickHandler.bind(this)}>
-                            <span className="checkbox"/>
-                            <div className="col flag-img"><img src="/static/media/7.png"
-                                                               alt="UEFA Champions League, Group D"/></div>
-                            <div className="col tournament-name px-2"><strong>Europe</strong> - UEFA Champions League,
-                                Group D
+                        <div className="confirm-container row m-0">
+                            <div className="col filter-btn filter-okay" onClick={this.applyFilter}>
+                                Apply (<strong>{this.state.filteredItems.length}</strong>)
                             </div>
-                        </div>
-                        <hr className="separator"/>
-                        <div className="dropdown-item" data-id="4564" onClick={this.filterItemClickHandler.bind(this)}>
-                            <span className="checkbox"/>
-                            <div className="col flag flag-france"></div>
-                            <div className="col tournament-name px-2"><strong>France</strong> - Ligue 2</div>
-
-                        </div>
-                        <hr className="separator"/>
-                        <div className="dropdown-item" data-id="6879" onClick={this.filterItemClickHandler.bind(this)}>
-                            <span className="checkbox"/>
-                            <div className="col flag flag-brazil"></div>
-                            <div className="col tournament-name px-2"><strong>Brazil</strong> - Brasileiro Série B
-                            </div>
-                        </div>
-                        <hr className="separator"/>
-                        <div className="dropdown-item" data-id="8976" onClick={this.filterItemClickHandler.bind(this)}>
-                            <span className="checkbox"/>
-                            <div className="col flag flag-peru"></div>
-                            <div className="col tournament-name px-2"><strong>Peru</strong> - Primera Division,
-                                Clausura
-                            </div>
-                        </div>
-                        <hr className="separator"/>
-                        <div className="row m-0">
-                            <div className="col filter-okay" onClick={this.applyFilter}>
-                                Confirm Filter (<strong>{this.state.filteredItems.length}</strong>)
-                            </div>
-                            <div className="col filter-clear" onClick={this.clearFilter}>
+                            <div className="col filter-btn filter-clear" onClick={this.clearFilter}>
                                 Clear
                             </div>
 
@@ -191,5 +177,27 @@ class Headertabs extends Component {
         )
     }
 }
+
+const FilterItems = props => {
+    let FilterItems = [];
+    if (props.orjData) {
+        props.orjData.sportItem.tournaments.forEach((tournament, i) => {
+            FilterItems.push(
+                <div key={i}>
+                    <div className={"dropdown-item" + (props.filteredItems.indexOf(tournament.tournament.id) > -1 ? " checked" : "")} data-id={tournament.tournament.id}
+                         onClick={props.filterItemClickHandler}>
+                        <span className="checkbox"/>
+                        {props.flagImg(tournament)}
+                        <div className="col tournament-name px-2">
+                            <strong>{tournament.category.name}</strong> - {tournament.tournament.name}</div>
+                    </div>
+                    <hr className="separator"/>
+                </div>
+            )
+        });
+    }
+    return FilterItems;
+
+};
 
 export default Headertabs

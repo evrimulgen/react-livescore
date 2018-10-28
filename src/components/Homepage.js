@@ -9,7 +9,7 @@ class Homepage extends Component {
     componentDidMount() {
         let todaysDate = moment().format('YYYY-M-D');
         this.props.getData({
-            api: '/football//' + todaysDate +'/json',
+            api: '/football//' + todaysDate + '/json',
             data: null,
             scrollToTop: false
         });
@@ -19,7 +19,7 @@ class Homepage extends Component {
         const dataObj = this.props.mainData;
         let mainContent = [];
 
-        if(dataObj) {
+        if (dataObj) {
             if (typeof dataObj.status !== "undefined" && dataObj.status !== "200") {
                 mainContent.push(<Errors key={1} type="error" message="Error" status={dataObj.status}/>);
             } else {

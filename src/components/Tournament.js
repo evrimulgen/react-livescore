@@ -2,21 +2,6 @@ import React, {Component} from 'react';
 import Event from "./Event";
 
 class Tournament extends Component {
-    static flagImg(tournament) {
-        let uniqueTournamentImages = [7,8,11,384,480,679];
-        if (uniqueTournamentImages.indexOf(tournament.tournament.uniqueId) > -1) {
-            return (
-                <div className="col flag-img">
-                    <img src={"/static/media/" + tournament.tournament.uniqueId + ".png"} alt={tournament.tournament.name}/>
-                </div>
-            )
-        } else {
-            return (
-                <div className={"col flag flag-" + tournament.category.flag}/>
-            )
-        }
-    };
-
     render() {
         return (
             <div>
@@ -25,7 +10,7 @@ class Tournament extends Component {
                         <div className="tournament-wrapper" key={i}>
                             <div className="tournament-title">
                                 <div className="row align-items-center">
-                                    {Tournament.flagImg(tournament)}
+                                    {this.props.flagImg(tournament)}
                                     <div className="col tournament-name px-2">
                                         <strong>{tournament.category.name}</strong> - {tournament.tournament.name}
                                     </div>
