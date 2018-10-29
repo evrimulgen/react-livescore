@@ -82,7 +82,8 @@ class App extends Component {
         let jsonData = {};
         $.ajax({
             url: 'https://www.sofascore.com' + options.api,
-            data: options.data
+            data: options.data,
+            cache: false
         }).done((data) => {
             jsonData = this.preprocessData(data);
         }).fail((xhr) => {
