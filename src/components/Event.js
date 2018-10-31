@@ -17,7 +17,7 @@ class Event extends Component {
         switch (this.props.event.status.type) {
             case "inprogress":
                 text =
-                    <div className="live font-weight-bold">
+                    <div className="red font-weight-bold">
                         {this.props.event.statusDescription}
                         {(this.props.event.status.code === 6) ? '' : ''}
                         {(liveBlinkerCodes.indexOf(this.props.event.status.code) > -1) ? <span className="live-blinker">'</span> : ''}
@@ -27,6 +27,18 @@ class Event extends Component {
                 text =
                     <div className="full-time font-weight-bold">
                         {moment(this.props.event.startTimestamp * 1000).format('HH:mm')}
+                    </div>;
+                break;
+            case "canceled":
+                text =
+                    <div className="red small-text line-clamp">
+                        Cancelled
+                    </div>;
+                break;
+            case "postponed":
+                text =
+                    <div className="red small-text line-clamp">
+                        Postponed
                     </div>;
                 break;
             default:
@@ -55,7 +67,7 @@ class Event extends Component {
                             {event.homeTeam.name}
                         </div>
                         <div className={"col event-score text-center font-weight-bold px-0" + (event.status.type === 'inprogress' ? ' live' : '')}>
-                            {event.status.type === "notstarted" ? "-" : event.homeScore.current + ':' + event.awayScore.current}
+                            {(event.homeScore.current || event.awayScore.current) ? event.homeScore.current + ':' + event.awayScore.current : " - "}
                         </div>
                         <div className="col event-team away text-left pl-0 pr-2">
                             {event.awayTeam.name}

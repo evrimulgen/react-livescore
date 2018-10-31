@@ -49,10 +49,22 @@
     max-width: 50px;
 }
 
-.live {
+.live,
+.red{
     color: red;
 }
 
+.yellow {
+    color: #808000;
+}
+
+.small-text {
+    font-size: .8rem;
+}
+
+.line-clamp {
+    @include line-clamp(1);
+}
 .event-fav {
     font-size: 1.5rem;
     max-width: 40px;
