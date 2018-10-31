@@ -21,6 +21,21 @@ class Headertabs extends Component {
         this.clearFilter = this.clearFilter.bind(this);
     }
 
+    componentDidMount () {
+        const persistState = sessionStorage.getItem('HeadertabsState');
+        if (persistState) {
+            try {
+                this.setState(JSON.parse(persistState));
+            } catch (e) {
+                // is not json
+            }
+        }
+    }
+
+    componentWillUnmount () {
+        sessionStorage.set('HeadertabsState', JSON.stringify(this.state));
+    }
+
     clearFilter() {
         this.setState({
             filteredItems: [],
@@ -96,7 +111,9 @@ class Headertabs extends Component {
                 });
             }
         }
-        this.setState({isLive: !this.state.isLive});
+        this.setState({isLive: !this.state.isLive}, () => {
+            sessionStorage.setItem('HeadertabsState', JSON.stringify(this.state));
+        });
     }
 
     openFilterDropdown() {
