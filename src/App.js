@@ -48,7 +48,7 @@ class App extends Component {
 
     preprocessData = data => {
         // Custom Sorting - Move some tournaments to the top of the list (FYI: 62 = Turkey, Super Lig)
-        let moveToTop = [62]; // list the tournament Id's in order, i.e: [62, 36, 33]
+        let moveToTop = [62,63]; // list the tournament Id's in order, i.e: [62, 36, 33]
         let tournaments = data.sportItem.tournaments;
         for (let i = 0; i < tournaments.length; i++) {
             for (let k = 0; k < moveToTop.length; k++) {
