@@ -7,7 +7,7 @@ import moment from "moment";
 class Homepage extends Component {
 
     componentDidMount() {
-        let todaysDate = moment().format('YYYY-M-D');
+        let todaysDate = moment().format('YYYY-MM-DD');
         this.props.getData({
             api: '/football//' + todaysDate + '/json',
             data: null,
