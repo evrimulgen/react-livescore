@@ -8,51 +8,55 @@ class Headertabs extends Component {
         super(props);
         this.state = {
             isFilterDropdown: false,
-            isFilterSelected: false,
             filteredItems: [],
             isLive: false,
             isSportDropdown: false,
         };
-        this.toggleLive = this.toggleLive.bind(this);
-        this.openFilterDropdown = this.openFilterDropdown.bind(this);
-        this.openSportDropdown = this.openSportDropdown.bind(this);
-        this.applyFilter = this.applyFilter.bind(this);
-        this.filterItemClickHandler = this.filterItemClickHandler.bind(this);
-        this.clearFilter = this.clearFilter.bind(this);
     }
 
-    componentDidMount () {
+    componentDidMount() {
         const persistState = sessionStorage.getItem('HeadertabsState');
         if (persistState) {
             try {
                 this.setState(JSON.parse(persistState));
             } catch (e) {
-                // is not json
+                console.log("Prev state can't implemented, something went seriously wrong!");
             }
         }
     }
 
-    componentWillUnmount () {
-        sessionStorage.set('HeadertabsState', JSON.stringify(this.state));
+    setSessionStorage() {
+        sessionStorage.setItem('HeadertabsState', JSON.stringify({...this.state}));
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.orjData && prevProps.orjData !== this.props.orjData) {
+            console.log('## triggered');
+            if (this.state.isLive) {
+                this.applyLiveHandler(false);
+            }
+            if (this.state.filteredItems.length > 0) {
+                this.applyFilter();
+            }
+        }
     }
 
     clearFilter() {
         this.setState({
             filteredItems: [],
-            isFilterDropdown: false,
-            isFilterSelected: false,
-            isLive: false
-        });
+            isFilterDropdown: false
+        }, this.setSessionStorage);
         this.props.updateParentState({
             mainData: this.props.orjData
+        }, () => {
+            if (this.state.isLive) {
+                this.applyLiveHandler(false)
+            }
         });
     }
 
-    applyFilter() {
-        this.setState({
-            isFilterDropdown: false,
-            isFilterSelected: this.state.filteredItems.length > 0
-        });
+    applyFilter(click) {
+        if (click) this.setState({isFilterDropdown: false});
         if (this.state.filteredItems.length > 0) {
             let LiveMatches = cloneDeep(this.props.orjData);
             LiveMatches.sportItem.tournaments = LiveMatches.sportItem.tournaments.filter((tournament) => {
@@ -60,10 +64,12 @@ class Headertabs extends Component {
             });
             this.props.updateParentState({
                 mainData: LiveMatches
+            }, () => {
+                this.setSessionStorage();
+                if (this.state.isLive) {
+                    this.applyLiveHandler(false);
+                }
             });
-            this.setState({
-                isLive: false
-            })
         } else {
             this.clearFilter();
         }
@@ -84,11 +90,8 @@ class Headertabs extends Component {
         this.setState({filteredItems: newfilteredItems});
     }
 
-
-    toggleLive(status) {
-        this.setState({isFilterDropdown: false});
-        this.setState({isSportDropdown: false});
-        if (status === false) {
+    applyLiveHandler(livePrevState, clicked = false) {
+        if (livePrevState === false) {
             let LiveMatches = cloneDeep(this.props.mainData);
             LiveMatches.sportItem.tournaments = LiveMatches.sportItem.tournaments.reduce(function (whole, tournament) {
                 tournament.events = tournament.events.filter((event) => {
@@ -104,26 +107,34 @@ class Headertabs extends Component {
             });
         } else {
             if (this.state.filteredItems.length > 0) {
-                this.applyFilter();
+                this.applyFilter(clicked);
             } else {
                 this.props.updateParentState({
                     mainData: this.props.orjData
                 });
             }
         }
-        this.setState({isLive: !this.state.isLive}, () => {
-            sessionStorage.setItem('HeadertabsState', JSON.stringify(this.state));
-        });
+    }
+
+    toggleLive() {
+        let livePrevState = this.state.isLive;
+        this.setState({isFilterDropdown: false, isSportDropdown: false}); // close other dropdowns
+        this.applyLiveHandler(livePrevState, true);
+        this.setState({isLive: !livePrevState}, this.setSessionStorage);
     }
 
     openFilterDropdown() {
-        this.setState({isFilterDropdown: !this.state.isFilterDropdown});
-        this.setState({isSportDropdown: false});
+        this.setState({
+            isFilterDropdown: !this.state.isFilterDropdown,
+            isSportDropdown: false
+        }, this.setSessionStorage);
     }
 
     openSportDropdown() {
-        this.setState({isSportDropdown: !this.state.isSportDropdown});
-        this.setState({isFilterDropdown: false});
+        this.setState({
+            isSportDropdown: !this.state.isSportDropdown,
+            isFilterDropdown: false
+        }, this.setSessionStorage);
     }
 
     render() {
@@ -160,7 +171,7 @@ class Headertabs extends Component {
 
                 <li className={"col col-live p-0" + (this.state.isLive ? ' active' : '')}>
                     <div className="header-tabs-container justify-content-center"
-                         onClick={this.toggleLive.bind(null, this.state.isLive)}>
+                         onClick={this.toggleLive.bind(this)}>
                         <Icon name="far fa-clock mr-1"/> Live
                     </div>
                 </li>
@@ -169,7 +180,7 @@ class Headertabs extends Component {
                         Today <Icon name="ml-1 fas fa-angle-down"/>
                     </div>
                 </li>
-                <li className={"col col-filter p-0" + (this.state.isFilterSelected ? ' active' : '')}>
+                <li className={"col col-filter p-0" + (this.state.filteredItems.length > 0 ? ' active' : '')}>
                     <div className="header-tabs-container justify-content-center"
                          onClick={this.openFilterDropdown.bind(this)}>
                         <Icon name="ml-1 fas fa-filter"/>
@@ -177,13 +188,14 @@ class Headertabs extends Component {
                     <div className={"dropdown-menu filters right" + (this.state.isFilterDropdown ? ' show' : '')}
                          aria-labelledby="dropdownMenuButton">
                         <div className="list-container">
-                        {this.state.isFilterDropdown ? <FilterItems filterItemClickHandler={this.filterItemClickHandler} {...this.props} {...this.state}/> : ''}
+                            {this.state.isFilterDropdown ? <FilterItems
+                                filterItemClickHandler={this.filterItemClickHandler.bind(this)} {...this.props} {...this.state}/> : ''}
                         </div>
                         <div className="confirm-container row m-0">
-                            <div className="col filter-btn filter-okay" onClick={this.applyFilter}>
+                            <div className="col filter-btn filter-okay" onClick={this.applyFilter.bind(this)}>
                                 Apply (<strong>{this.state.filteredItems.length}</strong>)
                             </div>
-                            <div className="col filter-btn filter-clear" onClick={this.clearFilter}>
+                            <div className="col filter-btn filter-clear" onClick={this.clearFilter.bind(this)}>
                                 Clear
                             </div>
 
@@ -201,8 +213,10 @@ const FilterItems = props => {
         props.orjData.sportItem.tournaments.forEach((tournament, i) => {
             FilterItems.push(
                 <div key={i}>
-                    <div className={"dropdown-item" + (props.filteredItems.indexOf(tournament.tournament.id) > -1 ? " checked" : "")} data-id={tournament.tournament.id}
-                         onClick={props.filterItemClickHandler}>
+                    <div
+                        className={"dropdown-item" + (props.filteredItems.indexOf(tournament.tournament.id) > -1 ? " checked" : "")}
+                        data-id={tournament.tournament.id}
+                        onClick={props.filterItemClickHandler}>
                         <span className="checkbox"/>
                         {props.flagImg(tournament)}
                         <div className="col tournament-name px-2">

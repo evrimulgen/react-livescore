@@ -10,9 +10,16 @@ class Homepage extends Component {
         let todaysDate = moment().format('YYYY-MM-DD');
         this.props.getData({
             api: '/football//' + todaysDate + '/json',
-            data: null,
-            scrollToTop: false
+            loading: true
         });
+
+        // retrieve fresh data in every 10 seconds without displaying loading
+        setInterval(()=>{
+            this.props.getData({
+                api: '/football//' + todaysDate + '/json',
+                loading: false
+            });
+        }, 4000);
     }
 
     render() {

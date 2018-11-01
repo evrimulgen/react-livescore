@@ -20,6 +20,7 @@
     letter-spacing: 0.01rem;
     max-width: 50px;
     padding: 0;
+    @include line-clamp(1);
 }
 
 .events-wrapper {
@@ -46,7 +47,8 @@
 
 .event-time {
     font-size: .9rem;
-    max-width: 50px;
+    max-width: 60px;
+    @include line-clamp(1);
 }
 
 .live,

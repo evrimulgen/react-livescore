@@ -23,8 +23,10 @@ class App extends Component {
         this.getData = this.getData.bind(this);
     }
 
-    updateParentState = state => {
-        this.setState(state);
+    updateParentState = (state,cb) => {
+        this.setState(state, () => {
+            if (cb) cb();
+        });
     };
     sportItem;
     tournament;
@@ -75,14 +77,11 @@ class App extends Component {
     };
 
     getData = options => {
-        this.setState({
-            loading: true
-        });
-
+        if (options.loading) this.setState({loading: true});
         let jsonData = {};
         $.ajax({
             url: 'https://www.sofascore.com' + options.api,
-            data: options.data,
+            data: options.data ? options.data : null,
             cache: false
         }).done((data) => {
             jsonData = this.preprocessData(data);
