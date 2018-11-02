@@ -31,7 +31,11 @@ class Homepage extends Component {
                 mainContent.push(<Errors key={1} type="error" message="Error" status={dataObj.status}/>);
             } else {
                 if (dataObj.sportItem) {
-                    mainContent.push(<Tournament key={1} data={dataObj} {...this.props}/>)
+                    if (dataObj.sportItem.tournaments.length > 0) {
+                        mainContent.push(<Tournament key={1} data={dataObj} {...this.props}/>)
+                    } else {
+                        mainContent.push(<Errors key={1} type="no-matched-game"/>)
+                    }
                 } else if (dataObj.liveList) {
                     mainContent.push(<Errors key={1} type="no-live-game"/>)
                 }
