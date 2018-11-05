@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import Icon from "./Icon";
 import {cloneDeep} from "lodash";
+//import moment from "moment";
+import DayPicker from "react-day-picker";
+import moment from "moment";
 
 class Headertabs extends Component {
 
@@ -11,6 +14,8 @@ class Headertabs extends Component {
             filteredItems: [],
             isLive: false,
             isSportDropdown: false,
+            isDateDropdown: false,
+            selectedDay: moment().format('YYYY-MM-DD')
         };
     }
 
@@ -117,7 +122,7 @@ class Headertabs extends Component {
 
     toggleLive() {
         let livePrevState = this.state.isLive;
-        this.setState({isFilterDropdown: false, isSportDropdown: false}); // close other dropdowns
+        this.setState({isFilterDropdown: false, isSportDropdown: false, isDateDropdown: false}); // close other dropdowns
         this.applyLiveHandler(livePrevState, true);
         this.setState({isLive: !livePrevState}, this.setSessionStorage);
     }
@@ -125,16 +130,31 @@ class Headertabs extends Component {
     openFilterDropdown() {
         this.setState({
             isFilterDropdown: !this.state.isFilterDropdown,
-            isSportDropdown: false
+            isSportDropdown: false,
+            isDateDropdown: false
         }, this.setSessionStorage);
     }
 
     openSportDropdown() {
         this.setState({
             isSportDropdown: !this.state.isSportDropdown,
-            isFilterDropdown: false
+            isFilterDropdown: false,
+            isDateDropdown: false
         }, this.setSessionStorage);
     }
+
+    openDateDropdown() {
+        this.setState({
+            isDateDropdown: !this.state.isDateDropdown,
+            isSportDropdown: false,
+            isFilterDropdown: false
+        });
+    }
+
+    handleSelectedDay(day) {
+        this.setState({selectedDay: moment(day).format('YYYY-MM-DD')});
+    }
+
 
     render() {
         return (
@@ -175,9 +195,20 @@ class Headertabs extends Component {
                     </div>
                 </li>
                 <li className="col col-date p-0">
-                    <div className="header-tabs-container justify-content-center">
-                        Today <Icon name="ml-1 fas fa-angle-down"/>
+                    <div className="header-tabs-container justify-content-end"
+                         onClick={this.openDateDropdown.bind(this)}>
+                        {(moment(this.state.selectedDay).format('YYYY-MM-DD') === moment().format('YYYY-MM-DD')) ? "Today" : <div className={"selected-date"}><span>{moment(this.state.selectedDay).format("DD")}</span><span>{moment(this.state.selectedDay).format("MMM")}</span></div>}
+                        <Icon name="mx-2 fas fa-angle-down"/>
                     </div>
+                    {this.state.isDateDropdown ? (
+                        <DayPicker
+                            onDayClick={this.handleSelectedDay.bind(this)}
+                            firstDayOfWeek={1}
+                            selectedDays={new Date(this.state.selectedDay)}
+                        />
+                    ) : (
+                        null
+                    )}
                 </li>
                 <li className={"col col-filter p-0" + (this.state.filteredItems.length > 0 ? ' active' : '')}>
                     <div className="header-tabs-container justify-content-center"
