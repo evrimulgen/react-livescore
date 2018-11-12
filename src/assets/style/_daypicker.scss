@@ -83,13 +83,37 @@
     opacity: 0.8;
 }
 
+.DayPicker-NavButton--prev,
+.DayPicker-NavButton--next {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 1.3rem;
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 36px;
+    height: 36px;
+    width: 36px;
+    border-radius: 100% 100%;
+    background: $color-cl-4;
+    color: #fff;
+    text-align: center;
+    top:10px;
+}
+.DayPicker-NavButton--next {
+    right: 20px;
+}
 .DayPicker-NavButton--prev {
-    margin-right: 1.5em;
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAwCAYAAAB5R9gVAAAABGdBTUEAALGPC/xhBQAAAVVJREFUWAnN2G0KgjAYwPHpGfRkaZeqvgQaK+hY3SUHrk1YzNLay/OiEFp92I+/Mp2F2Mh2lLISWnflFjzH263RQjzMZ19wgs73ez0o1WmtW+dgA01VxrE3p6l2GLsnBy1VYQOtVSEH/atCCgqpQgKKqYIOiq2CBkqtggLKqQIKgqgCBjpJ2Y5CdJ+zrT9A7HHSTA1dxUdHgzCqJIEwq0SDsKsEg6iqBIEoq/wEcVRZBXFV+QJxV5mBtlDFB5VjYTaGZ2sf4R9PM7U9ZU+lLuaetPP/5Die3ToO1+u+MKtHs06qODB2zBnI/jBd4MPQm1VkY79Tb18gB+C62FdBFsZR6yeIo1YQiLJWMIiqVjQIu1YSCLNWFgijVjYIuhYYCKoWKAiiFgoopxYaKLUWOii2FgkophYp6F3r42W5A9s9OcgNvva8xQaysKXlFytoqdYmQH6tF3toSUo0INq9AAAAAElFTkSuQmCC');
+    left: 20px;
+}
+.DayPicker-NavButton--prev:before {
+    content:"\f104";
 }
 
-.DayPicker-NavButton--next {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAwCAYAAAB5R9gVAAAABGdBTUEAALGPC/xhBQAAAXRJREFUWAnN119ugjAcwPHWzJ1gnmxzB/BBE0n24m4xfNkTaOL7wOtsl3AXMMb+Vjaa1BG00N8fSEibPpAP3xAKKs2yjzTPH9RAjhEo9WzPr/Vm8zgE0+gXATAxxuxtqeJ9t5tIwv5AtQAApsfT6TPdbp+kUBcgVwvO51KqVhMkXKsVJFXrOkigVhCIs1Y4iKlWZxB1rX4gwlpRIIpa8SDkWmggrFq4IIRaJKCYWnSgnrXIQV1r8YD+1Vrn+bReagysIFfLABRt31v8oBu1xEBttfRbltmfjgEcWh9snUS2kNdBK6WN1vrOWxObWsz+fjxevsxmB1GQDfINWiev83nhaoiB/CoOU438oPrhXS0WpQ9xc1ZQWxWHqUYe0I0qrKCQKjygDlXIQV2r0IF6ViEBxVTBBSFUQQNhVYkHIVeJAtkNsbQ7c1LtzP6FsObhb2rCKv7NBIGoq4SDmKoEgTirXAcJVGkFSVVpgoSrXICGUMUH/QBZNSUy5XWUhwAAAABJRU5ErkJggg==');
+.DayPicker-NavButton--next:before {
+    content:"\f105";
 }
 
 .DayPicker-NavButton--interactionDisabled {
@@ -98,9 +122,12 @@
 
 .DayPicker-Caption {
     display: table-caption;
-    margin-bottom: 0.5em;
-    padding: 0 0.5em;
-    text-align: left;
+    text-align: center;
+    padding: 0;
+    margin: -3px 0 12px;
+    line-height: 36px;
+    vertical-align: top;
+    color: #000;
 }
 
 .DayPicker-Caption > div {
@@ -140,7 +167,7 @@
 
 .DayPicker-Day {
     display: table-cell;
-    padding: 0.5em;
+    padding: 11px;
     border-radius: 50%;
     vertical-align: middle;
     text-align: center;
@@ -207,12 +234,12 @@
 
 .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside) {
     position: relative;
-    background-color: #0756bf;
+    background-color: $color-cl-4;
     color: #F0F8FF;
 }
 
 .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):hover {
-    background-color: #51A0FA;
+    background-color: $color-cl-4;
 }
 
 .DayPicker:not(.DayPicker--interactionDisabled)

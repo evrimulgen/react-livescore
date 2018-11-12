@@ -21,6 +21,7 @@ class App extends Component {
         };
         this.updateParentState = this.updateParentState.bind(this);
         this.getData = this.getData.bind(this);
+        this.interval = null;
     }
 
     updateParentState = (state,cb) => {
@@ -84,6 +85,15 @@ class App extends Component {
             data: options.data ? options.data : null,
             cache: false
         }).done((data) => {
+            if (options.interval) {
+                clearInterval(this.interval);
+                this.interval = setInterval(()=>{
+                    this.getData({
+                        api: options.api,
+                        loading: false
+                    });
+                }, options.intervaltime || 10000);
+            }
             jsonData = this.preprocessData(data);
         }).fail((xhr) => {
             jsonData.status = xhr.status;

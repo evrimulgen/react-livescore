@@ -31,7 +31,8 @@ class Headertabs extends Component {
     }
 
     setSessionStorage() {
-        sessionStorage.setItem('HeadertabsState', JSON.stringify({...this.state}));
+        const {selectedDay, ...obj} = this.state;
+        sessionStorage.setItem('HeadertabsState', JSON.stringify(obj));
     }
 
     componentDidUpdate(prevProps) {
@@ -42,6 +43,7 @@ class Headertabs extends Component {
             if (this.state.filteredItems.length > 0) {
                 this.applyFilter();
             }
+
         }
     }
 
@@ -152,7 +154,20 @@ class Headertabs extends Component {
     }
 
     handleSelectedDay(day) {
-        this.setState({selectedDay: moment(day).format('YYYY-MM-DD')});
+        let selectedDay = moment(day).format('YYYY-MM-DD');
+        if (selectedDay !== this.state.selectedDay) {
+            this.props.getData({
+                api: '/football//' + selectedDay + '/json',
+                loading: true,
+                interval: false
+            });
+        }
+        this.setState({
+            selectedDay: selectedDay,
+            isDateDropdown: false,
+            isLive: false,
+            filteredItems: []
+        });
     }
 
 
@@ -197,7 +212,10 @@ class Headertabs extends Component {
                 <li className="col col-date p-0">
                     <div className="header-tabs-container justify-content-end"
                          onClick={this.openDateDropdown.bind(this)}>
-                        {(moment(this.state.selectedDay).format('YYYY-MM-DD') === moment().format('YYYY-MM-DD')) ? "Today" : <div className={"selected-date"}><span>{moment(this.state.selectedDay).format("DD")}</span><span>{moment(this.state.selectedDay).format("MMM")}</span></div>}
+                        {(moment(this.state.selectedDay).format('YYYY-MM-DD') === moment().format('YYYY-MM-DD')) ? "Today" :
+                            <div className={"selected-date"}>
+                                <span>{moment(this.state.selectedDay).format("DD")}</span><span>{moment(this.state.selectedDay).format("MMM")}</span>
+                            </div>}
                         <Icon name="mx-2 fas fa-angle-down"/>
                     </div>
                     {this.state.isDateDropdown ? (
