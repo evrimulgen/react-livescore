@@ -38,7 +38,7 @@ class App extends Component {
         if (uniqueTournamentImages.indexOf(tournament.tournament.uniqueId) > -1) {
             return (
                 <div className="col flag-img">
-                    <img src={"/static/media/" + tournament.tournament.uniqueId + ".png"}
+                    <img src={(process.env.NODE_ENV === 'production' ? '/livescore' : '/') + "static/media/" + tournament.tournament.uniqueId + ".png"}
                          alt={tournament.tournament.name}/>
                 </div>
             )
@@ -50,14 +50,22 @@ class App extends Component {
     };
 
     preprocessData = data => {
-        // Custom Sorting - Move some tournaments to the top of the list (FYI: 62 = Turkey, Super Lig)
-        let moveToTop = [62,63]; // list the tournament Id's in order, i.e: [62, 36, 33]
+        // Custom Sorting - Move some tournaments to the top or bottom of the list (FYI: 62 = Turkey Super Lig, 309 = CONMEBOL Libertadores)
+        let moveToTop = [62,63]; // tournament Id's in order that you want at top i.e: [62, 36, 33]
+        let moveToBottom = [309]; // tournament Id's in the reverse order that you want at the bottom i.e: [309,310]
         let tournaments = data.sportItem.tournaments;
         for (let i = 0; i < tournaments.length; i++) {
             for (let k = 0; k < moveToTop.length; k++) {
                 if (tournaments[i].tournament.id === moveToTop[k]) {
                     let a = tournaments.splice(i, 1); // removes the item
                     tournaments.unshift(a[0]); // adds it back to the beginning
+                    break;
+                }
+            }
+            for (let k = 0; k < moveToBottom.length; k++) {
+                if (tournaments[i].tournament.id === moveToBottom[k]) {
+                    let a = tournaments.splice(i, 1); // removes the item
+                    tournaments.push(a[0]); // adds it back to the end
                     break;
                 }
             }
