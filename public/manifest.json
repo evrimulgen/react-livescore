@@ -1,6 +1,6 @@
 {
-  "name": "LiveScores App",
-  "short_name": "LiveScores App",
+  "name": "LiveScores",
+  "short_name": "LiveScores",
   "icons": [
     {
       "src": "./android-chrome-192x192.png",
@@ -15,6 +15,6 @@
   ],
   "theme_color": "#030866",
   "background_color": "#030866",
-  "start_url": "./index.html",
+  "start_url": "./",
   "display": "standalone"
 }

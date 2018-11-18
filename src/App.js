@@ -38,7 +38,7 @@ class App extends Component {
         if (uniqueTournamentImages.indexOf(tournament.tournament.uniqueId) > -1) {
             return (
                 <div className="col flag-img">
-                    <img src={(process.env.NODE_ENV === 'production' ? '/livescore' : '/') + "static/media/" + tournament.tournament.uniqueId + ".png"}
+                    <img src={(process.env.NODE_ENV === 'production' ? '/livescore/' : '/') + "static/media/" + tournament.tournament.uniqueId + ".png"}
                          alt={tournament.tournament.name}/>
                 </div>
             )
