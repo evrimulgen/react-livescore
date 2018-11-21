@@ -6,11 +6,9 @@ import Homepage from "./components/Homepage";
 import {Route, Switch} from "react-router-dom";
 import TestComp from "./components/TestComp";
 import Headertabs from "./components/Headertabs";
-import $ from "jquery";
 import moment from "moment";
 
 class App extends Component {
-    resetState;
 
     constructor(props) {
         super(props);
@@ -22,24 +20,24 @@ class App extends Component {
         this.updateParentState = this.updateParentState.bind(this);
         this.getData = this.getData.bind(this);
         this.interval = null;
-    }
+    };
 
-    updateParentState = (state,cb) => {
-        this.setState(state, () => {
-            if (cb) cb();
+    updateParentState = (state) => {
+        return new Promise((resolve) => {
+            this.setState(state, () => {
+                resolve()
+            });
         });
     };
-    sportItem;
-    tournament;
-    startTimestamp;
 
     flagImg(tournament) {
         let uniqueTournamentImages = [7, 8, 11, 384, 480, 679];
         if (uniqueTournamentImages.indexOf(tournament.tournament.uniqueId) > -1) {
             return (
                 <div className="col flag-img">
-                    <img src={(process.env.NODE_ENV === 'production' ? '/livescore/' : '/') + "static/media/" + tournament.tournament.uniqueId + ".png"}
-                         alt={tournament.tournament.name}/>
+                    <img
+                        src={(process.env.NODE_ENV === 'production' ? '/livescore/' : '/') + "static/media/" + tournament.tournament.uniqueId + ".png"}
+                        alt={tournament.tournament.name}/>
                 </div>
             )
         } else {
@@ -51,7 +49,7 @@ class App extends Component {
 
     preprocessData = data => {
         // Custom Sorting - Move some tournaments to the top or bottom of the list (FYI: 62 = Turkey Super Lig, 309 = CONMEBOL Libertadores)
-        let moveToTop = [62,63]; // tournament Id's in order that you want at top i.e: [62, 36, 33]
+        let moveToTop = [62, 63]; // tournament Id's in order that you want at top i.e: [62, 36, 33]
         let moveToBottom = [309]; // tournament Id's in the reverse order that you want at the bottom i.e: [309,310]
         let tournaments = data.sportItem.tournaments;
         for (let i = 0; i < tournaments.length; i++) {
@@ -88,36 +86,39 @@ class App extends Component {
     getData = options => {
         if (options.loading) this.setState({loading: true});
         let jsonData = {};
-        $.ajax({
-            url: 'https://www.sofascore.com' + options.api,
-            data: options.data ? options.data : null,
-            cache: false
-        }).done((data) => {
-            if (options.interval) {
-                clearInterval(this.interval);
-                this.interval = setInterval(()=>{
-                    this.getData({
-                        api: options.api,
-                        loading: false
-                    });
-                }, options.intervaltime || 10000);
-            }
-            jsonData = this.preprocessData(data);
-        }).fail((xhr) => {
-            jsonData.status = xhr.status;
-        }).always(() => {
-            this.setState({
-                orjData: jsonData,
-                mainData: jsonData,
-                loading: false
-            });
-            if (options.scrollToTop) {
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
+
+        fetch('https://www.sofascore.com' + options.api, {referrerPolicy: "no-referrer", cache: "no-store"})
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    if (options.interval) {
+                        clearInterval(this.interval);
+                        this.interval = setInterval(() => {
+                            this.getData({
+                                api: options.api,
+                                loading: false
+                            });
+                        }, options.intervaltime || 10000);
+                    }
+                    jsonData = this.preprocessData(result);
+                },
+                (error) => {
+                    jsonData.status = error.status;
+                }
+            )
+            .then(() => {
+                this.setState({
+                    orjData: jsonData,
+                    mainData: jsonData,
+                    loading: false
                 });
-            }
-        });
+                if (options.scrollToTop) {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: "smooth"
+                    });
+                }
+            });
     };
 
     render() {
@@ -128,7 +129,6 @@ class App extends Component {
                     {...this.state}
                     updateParentState={this.updateParentState}
                     getData={this.getData}
-                    resetState={this.resetState}
                     flagImg={this.flagImg}
                 />
                 {/*<Main getData={this.getData} {...this.state}/>*/}

@@ -54,7 +54,7 @@ class Headertabs extends Component {
         }, this.setSessionStorage);
         this.props.updateParentState({
             mainData: this.props.orjData
-        }, () => {
+        }).then(() => {
             if (this.state.isLive) {
                 this.applyLiveHandler(false)
             }
@@ -70,7 +70,7 @@ class Headertabs extends Component {
             });
             this.props.updateParentState({
                 mainData: LiveMatches
-            }, () => {
+            }).then(() => {
                 this.setSessionStorage();
                 if (this.state.isLive) {
                     this.applyLiveHandler(false);
