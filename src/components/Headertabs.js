@@ -36,7 +36,7 @@ class Headertabs extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.orjData && prevProps.orjData !== this.props.orjData) {
+        if (this.props.orjData && !this.props.orjData.error && prevProps.orjData !== this.props.orjData) {
             if (this.state.isLive) {
                 this.applyLiveHandler(false);
             }

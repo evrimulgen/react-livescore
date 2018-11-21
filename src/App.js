@@ -86,7 +86,6 @@ class App extends Component {
     getData = options => {
         if (options.loading) this.setState({loading: true});
         let jsonData = {};
-
         fetch('https://www.sofascore.com' + options.api, {referrerPolicy: "no-referrer", cache: "no-store"})
             .then(res => res.json())
             .then(
@@ -103,7 +102,7 @@ class App extends Component {
                     jsonData = this.preprocessData(result);
                 },
                 (error) => {
-                    jsonData.status = error.status;
+                    jsonData = {error: error.toString()};
                 }
             )
             .then(() => {
@@ -118,7 +117,7 @@ class App extends Component {
                         behavior: "smooth"
                     });
                 }
-            });
+            })
     };
 
     render() {

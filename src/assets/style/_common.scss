@@ -130,6 +130,23 @@ code {
     text-align: center;
 }
 
+.error-refresh-btn {
+    box-shadow: none;
+    font-size: 40px;
+    background: none;
+    border: none;
+}
+.error-refresh-text {
+}
+
+.error-refresh-wrapper {
+    cursor: pointer;
+    color:#aaa;
+}
+.error-refresh-wrapper:hover {
+    color: #222;
+}
+
 .gray {
     color: #777;
 }

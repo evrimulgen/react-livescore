@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
+import Icon from "./Icon";
 
 class Errors extends Component {
+
     render() {
         if (this.props.type === "no-live-game") {
             return <NoLiveGame/>;
         } if (this.props.type === "no-matched-game") {
             return <NothingFound/>;
         } else {
-            return <Error status={this.props.status} message={this.props.message}/>
+            return <Error message={this.props.message}/>
         }
     }
 }
@@ -32,9 +34,21 @@ const NoLiveGame = () => {
 };
 
 const Error = props => {
+    const refresh = () => {
+        window.location.reload();
+    }
     return (
-            <div className="fetch-alert error"><strong>Error!</strong> Something seriously gone
-                wrong :( <p><br/><code><strong>{props.status || ""}</strong> - {props.message || ""}</code></p></div>
+            <div className="fetch-alert error">
+                <strong>Error!</strong>
+                <p>Something went wrong :( </p>
+                <div className={"error-refresh-wrapper mt-3 mb-5 d-inline-block"} onClick={refresh}>
+                    <p className="error-refresh-btn mb-0"><Icon name="fas fa-redo"/></p>
+                    <p className={"error-refresh-text"}>Refresh!</p>
+                </div>
+                <p className="small-text">
+                    <code>{ props.message || ""}</code>
+                </p>
+            </div>
     )
 };
 

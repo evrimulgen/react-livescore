@@ -28,8 +28,8 @@ class Homepage extends Component {
         let mainContent = [];
 
         if (dataObj) {
-            if (typeof dataObj.status !== "undefined" && dataObj.status !== "200") {
-                mainContent.push(<Errors key={1} type="error" message="Error" status={dataObj.status}/>);
+            if (typeof dataObj.error !== "undefined") {
+                mainContent.push(<Errors key={1} type="error" message={dataObj.error}/>);
             } else {
                 if (dataObj.sportItem) {
                     if (dataObj.sportItem.tournaments.length > 0) {
